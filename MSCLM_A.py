@@ -41,7 +41,7 @@ class MSCLM_A:
                 if(v.strip().lower() == 'y'):
                     self.ArpaFileCheck()
                     print("Arpa to sorted text conversion started")
-                    self.ArpaToText_ExternalFileSort(memory_usage) # 500*1024.0
+                    self.ArpaToText_ExternalFileSort(memory_usage*1024.0) # 500*1024.0
                     print("Arpa to sorted text conversion completed")
                     print("Found {} gram".format(self.n_gram))
                     break
