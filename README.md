@@ -86,6 +86,7 @@ In each suggestion, first value indicates the log probability of the complete se
 Memory usage by word pointer trie: 4.57763671875e-05 MB
 Time usage to build word pointer trie: 1.5625 second(s)
 File Search space processing time 0: second(s) # when the sorted file data structure is already built
+File Search space processing time: 1377.09375 second(s) # when the sorted file data structure and word index file is built
 ```
 
 ## Important points to highlight. 
