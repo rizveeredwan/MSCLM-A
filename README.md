@@ -60,7 +60,7 @@ msclm_a.PrintStatus()
 'processing time': 1.15625
 }
 ```
-In each suggestion, first value indicates the log probability of the complete sentence if this suggestion is added. The second value is the suggestion. ``</s>`` indicates sentence completion is expected. 'processing time' indicates the time in seconds to perform the disk based query. 
+In each suggestion, first value indicates the log probability of the complete sentence if this suggestion is added. The second value is the suggestion. ``</s>`` indicates sentence completion is expected. 'processing time' indicates the time in seconds to perform the disk based query. See more at (./test_result.txt).
 
 ## Useful links 
 - KENLM: https://github.com/kpu/kenlm 
