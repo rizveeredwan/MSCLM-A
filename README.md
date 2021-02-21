@@ -6,6 +6,17 @@
 - Based on the provided arpa file, a sorted file data structure and a word index file is built. 
 - Using external merge sort the sorted file data structure is built. Users can provide the maximum physical memory usage in this regard.  
 - The implementation is stateful which means upon loading you can perform multiple queries. The sorted file data structure and word index file need to be built only once from arpa file. 
+- LM Probability Calculation 
+```
+Lets s = w1 w2 w3 w4 w5 w6, n = 3 
+So, p(s) = log[p(w1)] + log(p(w2|w1)] + log(p(w3|w1,w2)] + log(p(w4|w2,w3)] + log(p(w5|w3,w4)] + log(p(w6|w4,w5)] + log(p(w6|w4,w5)] + log(p(w7|w5,w6)]
+when p(w[i] | w[i-2] + w[i-1]) fails, then we shift to lower n-gram with backoff given in arpa file. 
+```
+- Next words suggestion Generation 
+```
+- So, lets we had already calculated p(s), now using word index pointer we perform prefix searching in the sorted file data structure. 
+- Collect the mathced grams and then report the top-k suggestions with high probability by adding the current grams probability and p(s). Backoff weight is omitted here.
+```
 
 ## Complexity Analysis 
  - Suppose, the apra file contained total `N` number of word combinations and the data is chunked into three files containing ``n1``,``n2`` and ``n3`` number of combinations. Each chunk is sorted in ``O(nlogn)`` complxity and written in temporary file in ``O(n)`` complexity. Final external merge sort complexity is ``O(NlogN)``.
@@ -91,11 +102,14 @@ File Search space processing time 0: second(s) # when the sorted file data struc
   'processing time': 0.453125
 }
 ```
-- Exact reported probability reported from this model can vary with the query output provided by [kenlm](https://kheafield.com/code/kenlm/) because of precision error and simplification in logic. Here the main goal was to automate the discovery targetting to find the most likely contexts rather than discovering exact value. 
+- Exact reported probability reported from this model can vary with the query output provided by [kenlm](https://kheafield.com/code/kenlm/) because of precision error and simplification in logic. Here the main goal was to automate the discovery targetting to find the most likely contexts rather than discovering the exact value. 
 
 ## Useful links 
 - KENLM: https://github.com/kpu/kenlm 
 - N-gram probability calculation: https://masatohagiwara.net/training-an-n-gram-language-model-and-estimating-sentence-probability.html 
+
+## Corpus Information 
+- This [corpus](https://drive.google.com/file/d/1wjERbp4EYv7BCFAZ0DR908VgRiT_WNew/view?usp=sharing) was for Bangla language contained 1 Crore raw punctuation free bangla sentences collected from [Prothom Alo](https://www.prothomalo.com/), [Sachalayatan](http://www.sachalayatan.com/) and [Somewhereinblog](https://www.somewhereinblog.net/). The Arpa file was generated using [lmplz](https://kheafield.com/code/kenlm/). Current proposed model MSCLM_A was given only the Apra file to generate the suggestions.  
 
 ## Contributors 
 [Redwan Ahmed Rizvee](https://www.linkedin.com/in/redwan-ahmed-rizvee-303b68133/). 
