@@ -1,0 +1,8 @@
+https://stackoverflow.com/questions/44309044/unicodedecodeerror-utf-8-invalid-continuation-byte/44309484
+https://masatohagiwara.net/training-an-n-gram-language-model-and-estimating-sentence-probability.html
+
+
+
+
+https://blog.feabhas.com/2019/02/python-3-unicode-and-byte-strings/
+http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html
