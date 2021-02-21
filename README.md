@@ -19,7 +19,7 @@ Trained Arpa file generated through a LM
 ## Installation 
 Base and python libraries should be enough. Used libraries 
 - sys, os, functools, queue, platform
-- Trained Arpa file: [Arpa File Url](). Unzip it during usage.
+- Trained Arpa file: [Arpa File Url](https://drive.google.com/file/d/1wjERbp4EYv7BCFAZ0DR908VgRiT_WNew/view?usp=sharing). Unzip it during usage.
 
 ## Usage 
 ```python
