@@ -8,6 +8,7 @@ import functools
 import queue
 import platform
 from time import process_time
+import string
 
 def compare(list1,list2):
     if(list1<list2):
@@ -29,6 +30,11 @@ class MSCLM_A:
         # apra file directory: after training using KENLM, probabilities will be stored here
         self.arpa_file_directory = arpa_file_directory
         self.n_gram = 0 # number of grams in arpa file
+        # word pointer memory and time consumption
+        self.word_ptr_memory = 0
+        self.word_ptr_read_time_consumption = 0
+        # sorted file DS time consumption
+        self.sorted_file_build_up_time_consumption = 0
         if(path.exists('Tmp/sorted_lm_data.txt') and path.exists('Tmp/word_pointers.txt')):
             while True:
                 v = input("Required files are already found. Do you want to build again?(y/n): ")
@@ -52,11 +58,6 @@ class MSCLM_A:
             self.ArpaToText_ExternalFileSort(500*1024.0)
             print("Arpa to sorted text conversion completed")
             print("Found {} gram".format(self.n_gram))
-        # word pointer memory and time consumption
-        self.word_ptr_memory = 0
-        self.word_ptr_read_time_consumption = 0
-        # sorted file DS time consumption
-        self.sorted_file_build_up_time_consumption = 0
         self.trie_root=WordTrie(0,0,0)
         self.SearchInit()
 
@@ -122,15 +123,15 @@ class MSCLM_A:
                         break
                 i_f.close()
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
 
     def ArpaToText_ExternalFileSort(self, threshold):
         self.sorted_file_build_up_time_consumption = process_time()
         if(path.exists('Tmp/')):
             for files in listdir('Tmp/'):
                 remove('Tmp/'+files)
-            remove('Tmp/')
-            mkdir('Tmp')
+            print("removed all the previous files")
         else:
             mkdir('Tmp')
         try:
@@ -223,7 +224,8 @@ class MSCLM_A:
                                 data.clear()
                             q.put(line)
                         except Exception as e:
-                            print(e)
+                            # print(e)
+                            pass
 
                 f_ptr.close()
             # merge sort
@@ -269,7 +271,7 @@ class MSCLM_A:
                     break
             return res
         except Exception as e:
-            print(e)
+            # print(e)
             return []
 
     def CheckAlreadyCalculate(self,words):
@@ -341,7 +343,7 @@ class MSCLM_A:
                 elif(word_string2 >word_string1):
                     return None,None,None,sz
             except Exception as e:
-                print(e)
+                # print(e)
                 return None,None,None,sz
         f.close()
 
@@ -366,10 +368,10 @@ class MSCLM_A:
             return False
         return True # exact is not calculated, smaller gram is considered
 
-    def SentenceCompletion(self,sentence,top_k):
+    def SentenceCompletion(self,sentence,top_k,previous_prob):
         starting_time = process_time()
         words = sentence.strip().split(" ")
-        total_prob = 0
+        total_prob = previous_prob
         prob,start_ptr = None,None
         last_succ_n_gram_len = self.n_gram-1
         for i in range(0,len(words)):
@@ -400,7 +402,7 @@ class MSCLM_A:
             result_object['input'] = sentence
             result_object['suggestions'] = result
             result_object['processing time'] = end_time-starting_time
-            return result_object
+            return total_prob,result_object
         except Exception as e:
             # debug: print(e)
             end_time = process_time()
@@ -408,7 +410,25 @@ class MSCLM_A:
             result_object['input'] = sentence
             result_object['suggestions'] = []
             result_object['processing time'] = end_time-starting_time
-            return result_object
+            return total_prob,result_object
+    def SuggestionGeneration(self,sentence,top_k,punctuation_dependency):
+        if(punctuation_dependency == False): # no punctuation punctuation_dependency is kept
+            total_prob,result_object = self.SentenceCompletion(sentence,top_k,0)
+        else: # punctuation dependency is prepared
+            sentences = []
+            sen = ""
+            for i in range(0,len(sentence)):
+                if(sentence[i] in string.punctuation):
+                    sentences.append(sen)
+                    sen = ""
+                else:
+                    sen = sen+sentence[i]
+            sentences.append(sen)
+            previous_prob = 0
+            for i in range(0,len(sentences)):
+                previous_prob,result_object = self.SentenceCompletion(sentences[i],top_k,previous_prob)
+            result_object['input'] = sentence
+        return result_object
 
     def ArpaFileCheck(self):
         file_name = self.arpa_file_directory.split('.')
@@ -422,7 +442,7 @@ class MSCLM_A:
             sys.exit(0)
     def GetPythonVersion(self):
         return sys.version_info
-    def PrintStatus(self):
+    def ConsumptionStatistics(self):
         print("Memory usage by word pointer trie: {} MB".format(self.word_ptr_memory))
-        print("Time usage to build word pointer trie {} seconds".format(self.word_ptr_read_time_consumption))
-        print("File Search space processing time {} seconds".format(self.sorted_file_build_up_time_consumption))
+        print("Time usage to build word pointer trie: {} second(s)".format(self.word_ptr_read_time_consumption))
+        print("File Search space processing time: {} second(s)".format(self.sorted_file_build_up_time_consumption))
