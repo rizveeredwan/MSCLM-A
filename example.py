@@ -10,7 +10,7 @@ top_k = 5 # maximum report top 5 suggestions with high log probability to comple
 msclm_a = MSCLM_A(arpa_file_directory,maximum_memory_usage_during_external_merge_sort)
 
 # query code
-input = 'আমার ভাইয়ের রক্তে'
+input = 'রঞ্জনা আমি আর'
 result_object = msclm_a.SuggestionGeneration(input,top_k,punctuation_dependency) # A bangla sentence
 print(result_object)
 

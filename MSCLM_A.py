@@ -105,14 +105,14 @@ class MSCLM_A:
                     try:
                         line = line.decode('utf-8')
                     except Exception as e:
-                        print("error = ",e)
+                        # print("error = ",e)
                         continue
                     try:
                         l = line.strip()
                         l = l.split(' ')
                         # print(l)
                     except Exception as e:
-                        print("error = ",e)
+                        # print("error = ",e)
                         continue
                     if(l[0] == '\data\\'):
                         init_block = True
@@ -160,14 +160,14 @@ class MSCLM_A:
                     try:
                         line = line.decode('utf-8')
                     except Exception as e:
-                        print("error = ",e)
+                        # print("error = ",e)
                         continue
                     try:
                         l = line.strip()
                         l = l.split(' ')
                         # print(l)
                     except Exception as e:
-                        print("error = ",e)
+                        # print("error = ",e)
                         continue
                     if(l[0] == '\data\\'):
                         init_block = True
@@ -237,7 +237,7 @@ class MSCLM_A:
             self.sorted_file_build_up_time_consumption = process_time() - self.sorted_file_build_up_time_consumption
 
         except Exception as e:
-            print("error = ",e)
+            # print("error = ",e)
             raise Exception(e)
 
     def FindingNextWord(self,word_group,byte_count,previous_prob,top_k):
