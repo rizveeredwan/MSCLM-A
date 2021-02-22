@@ -4,7 +4,7 @@
 
 ## Algorithm 
 - Based on the provided arpa file, a sorted file data structure and a word index file is built. 
-- Using external merge sort the sorted file data structure is built. Users can provide the maximum physical memory usage in this regard.  
+- Using external merge sort, the sorted file data structure is built. Users can provide the maximum physical memory usage in this regard.  
 - The implementation is stateful which means upon loading you can perform multiple queries. The sorted file data structure and word index file need to be built only once from arpa file. 
 - LM Probability Calculation 
 ```
@@ -33,7 +33,7 @@ Trained Arpa file generated through a LM
 
 ## Installation 
 Base and python libraries should be enough. Used libraries 
-- sys, os, functools, queue, platform, time.
+- sys, os, functools, queue, platform, time,string.
 - Trained Arpa file: [Arpa File Url](https://drive.google.com/file/d/1wjERbp4EYv7BCFAZ0DR908VgRiT_WNew/view?usp=sharing). Unzip it during usage.
 - Just simply clone this repository using 
 ```
@@ -48,14 +48,14 @@ from MSCLM_A import MSCLM_A
 # input parameters
 arpa_file_directory = 'text.arpa'
 maximum_memory_usage_during_external_merge_sort = 500 # in MB
-punctuation_dependency = False # no punctuation is kept and and considered there is no punctuation in the input sentence
+punctuation_dependency =  False # no punctuation is kept and and considered there is no punctuation in the input sentence
 top_k = 5 # maximum report top 5 suggestions with high log probability to complete the sentence
 
 # object creation
 msclm_a = MSCLM_A(arpa_file_directory,maximum_memory_usage_during_external_merge_sort)
 
-# query code 
-input = 'আমার ভাইয়ের রক্তে'
+# query code
+input = 'আমার সোনার বাংলা'
 result_object = msclm_a.SuggestionGeneration(input,top_k,punctuation_dependency) # A bangla sentence
 print(result_object)
 
