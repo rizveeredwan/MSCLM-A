@@ -4,7 +4,7 @@
 
 ## Algorithm 
 - Based on the provided arpa file, a sorted file data structure and a word index file is built. 
-- Using external merge sort the sorted file data structure is built. Users can provide the maximum physical memory usage in this regard.  
+- Using external merge sort, the sorted file data structure is built. Users can provide the maximum physical memory usage in this regard.  
 - The implementation is stateful which means upon loading you can perform multiple queries. The sorted file data structure and word index file need to be built only once from arpa file. 
 - LM Probability Calculation 
 ```
